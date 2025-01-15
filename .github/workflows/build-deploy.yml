@@ -7,17 +7,20 @@
     #    tags: 'v*'
 
     on:
-        push:
         workflow_dispatch:
           inputs:
-            # logLevel:
-            #   description: 'Log level'     
-            #   required: true
-            #   default: 'warning'
+            name:
+             type: choice
+             description: Ca va ?
+             options:
+             - Oui
+             - Non     
+             required: true
+             default: 'warning'
             tags:
               description: "Version"   
               required: true
-              type: boolean
+              default: 'v1.00'
     
     env:
       REGISTRY: docker.io
@@ -39,12 +42,14 @@
               echo "Tags: $TAGS"
             env:
               TAGS: ${{ inputs.tags }}
+          - name: Ca va ?
+            run: echo "${{ github.event.inputs.name }}"
 #--------------------------------------------------- 
 
 
           - uses: actions/checkout@v4
             with:
-                ref: ${{ github.event.inputs.tag }}
+                ref: ${{ github.event.inputs.tags }}
     
           - uses: actions/setup-go@v5
             with:
