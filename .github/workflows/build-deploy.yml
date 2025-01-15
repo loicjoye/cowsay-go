@@ -6,7 +6,7 @@
         workflow_dispatch:
           inputs:
 
-            tags:
+            version:
               description: "Version"   
               required: true
               default: 'v1.00'
@@ -24,8 +24,9 @@
       IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/go-cowsay
     
     jobs:
+#-----------------Build du main.go--------------______-----------                
       build:
-        name: build go code into binary
+        name: Build GO code in binary file
 
         runs-on: ubuntu-latest
         steps:
@@ -48,13 +49,14 @@
     
           - name: Upload static files as artifact
             id: deployment
-            uses: actions/upload-artifact@v4 # or specific "vX.X.X" version tag for this action
+            uses: actions/upload-artifact@v4
             with:
               path: bin/
               name: cowsaybin
       
+#-----------------Déploiement sur une VM-------------------------                
       deploy:
-        name: deploy on my self hosted
+        name: Deploy on Azure VM
         needs: build
         runs-on: ubuntu-latest
         steps:
@@ -65,9 +67,10 @@
           - run: | 
               chmod u+x cowsay
               ./cowsay
-      
+
+#-----------------Déploiement sur DockerHub----------------------  
       push-docker:
-        name: push in dockerhub registry
+        name: Push to DockerHub registery
         
         needs: build
         runs-on: ubuntu-latest
@@ -108,6 +111,6 @@
             with:
               context: .
               push: true
-              tags: ${{ steps.meta.outputs.tags }}
+              tags: ${{ github.event.inputs.version }}
               labels: ${{ steps.meta.outputs.labels }}
             #   platforms: linux/${{ github.event.inputs.platform }}
