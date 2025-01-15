@@ -60,7 +60,7 @@
         strategy:
           matrix:
             arch:
-              # - amd64
+              - amd64
               - arm64
         needs: build
         runs-on: ubuntu-latest
