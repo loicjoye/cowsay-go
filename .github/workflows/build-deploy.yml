@@ -91,7 +91,6 @@
               images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
               tags: |
                 type=raw, value=${{ github.event.inputs.version }}
-                type=sha
             #  platforms: linux/${{ github.event.inputs.platform }}
     
           - name: Login to Docker Hub
