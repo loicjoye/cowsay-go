@@ -108,6 +108,6 @@
             with:
               context: .
               push: true
-            #   tags: ${{ github.event.inputs.tags }}
+              tags: ${{ steps.meta.outputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
-              platforms: linux/${{ github.event.inputs.platform }}
+            #   platforms: linux/${{ github.event.inputs.platform }}
