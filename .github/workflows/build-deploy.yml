@@ -28,8 +28,6 @@
           - run: go version
     
           - run: |
-              go mod init github.com/o-devops/go-cowsay
-              go mod tidy
               go build -o ${{ matrix.arch }}/cowsay .
             env:
               GOARCH: ${{ matrix.arch }}
