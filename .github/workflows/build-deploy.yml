@@ -2,25 +2,22 @@
 
     name: build and deliver cowsay app
     
-    # on:
-    #   push:
-    #    tags: 'v*'
-
     on:
         workflow_dispatch:
           inputs:
-            name:
-             type: choice
-             description: Ca va ?
-             options:
-             - Oui
-             - Non     
-             required: true
-             default: 'warning'
+
             tags:
               description: "Version"   
               required: true
               default: 'v1.00'
+
+             platform:
+              type: choice
+              description: Plateform
+              options: 
+              - amd64
+              - arm64
+
     
     env:
       REGISTRY: docker.io
@@ -29,27 +26,13 @@
     jobs:
       build:
         name: build go code into binary
-        strategy:
-          matrix:
-            arch:
-              - amd64
-              - arm64
+
         runs-on: ubuntu-latest
         steps:
 
- #---------------------------------------------------           
-          - run: |
-              echo "Tags: $TAGS"
-            env:
-              TAGS: ${{ inputs.tags }}
-          - name: Ca va ?
-            run: echo "${{ github.event.inputs.name }}"
-#--------------------------------------------------- 
-
-
           - uses: actions/checkout@v4
-            with:
-                ref: ${{ github.event.inputs.tags }}
+        #    with:
+        #        ref: ${{ github.event.inputs.tags }}
     
           - uses: actions/setup-go@v5
             with:
@@ -58,19 +41,19 @@
           - run: go version
     
           - run: |
-              go build -o ${{ matrix.arch }}/cowsay .
+              go build -o ${{ github.event.inputs.platform }}/cowsay .
             env:
-              GOARCH: ${{ matrix.arch }}
+              GOARCH: ${{ github.event.inputs.platform }}
           
           - run: |
-              cp Dockerfile ${{ matrix.arch }}/
+              cp Dockerfile ${{ github.event.inputs.platform }}/
     
           - name: Upload static files as artifact
             id: deployment
             uses: actions/upload-artifact@v4 # or specific "vX.X.X" version tag for this action
             with:
-              path: ${{ matrix.arch }}/
-              name: cowsaybin-${{ matrix.arch }}
+              path: ${{ github.event.inputs.platform }}/
+              name: cowsaybin-${{ github.event.inputs.platform }}
       
       # deploy:
       #   name: deploy on my self hosted
@@ -87,18 +70,14 @@
       
       push-docker:
         name: push in dockerhub registry
-        strategy:
-          matrix:
-            arch:
-              - amd64
-              - arm64
+        
         needs: build
         runs-on: ubuntu-latest
         steps:
           - uses: actions/download-artifact@v4
             with:
               path: .
-              name: cowsaybin-${{ matrix.arch }}
+              name: cowsaybin-${{ github.event.inputs.platform }}
     
           - run: | 
               chmod u+x cowsay
@@ -125,6 +104,6 @@
             with:
               context: .
               push: true
-              tags: ${{ steps.meta.outputs.tags }}
+              tags: ${{ github.event.inputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
-              platforms: linux/${{ matrix.arch }}
+              platforms: linux/${{ github.event.inputs.platform }}
