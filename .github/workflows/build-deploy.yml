@@ -24,7 +24,7 @@
       IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/go-cowsay
     
     jobs:
-#-----------------Build du main.go--------------______-----------                
+#-----------------Build du main.go------------------------------                
       build:
         name: Build GO code in binary file
 
@@ -39,13 +39,11 @@
           
           - run: go version
     
-          - run: |
-              go build -o bin/cowsay .
+          - run: go build -o bin/cowsay .
             env:
               GOARCH: ${{ github.event.inputs.platform }}
           
-          - run: |
-              cp Dockerfile bin/
+          - run: cp Dockerfile bin/
     
           - name: Upload static files as artifact
             id: deployment
@@ -80,8 +78,7 @@
               path: .
               name: cowsaybin
     
-          - run: | 
-              chmod u+x cowsay
+          - run: chmod u+x cowsay
     
           - run: |
               pwd
