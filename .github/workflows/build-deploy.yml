@@ -64,8 +64,8 @@
             with:
               path: .
               name: cowsaybin
-          - run: | 
-              chmod u+x cowsay
+          - run:  
+            #   chmod u+x cowsay
               ./cowsay
 
 #-----------------Déploiement sur DockerHub----------------------  
