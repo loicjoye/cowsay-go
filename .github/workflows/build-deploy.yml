@@ -31,8 +31,6 @@
         steps:
 
           - uses: actions/checkout@v4
-        #    with:
-        #        ref: ${{ github.event.inputs.tags }}
     
           - uses: actions/setup-go@v5
             with:
@@ -41,32 +39,32 @@
           - run: go version
     
           - run: |
-              go build -o ${{ github.event.inputs.platform }}/cowsay .
+              go build -o bin/cowsay .
             env:
               GOARCH: ${{ github.event.inputs.platform }}
           
           - run: |
-              cp Dockerfile ${{ github.event.inputs.platform }}/
+              cp Dockerfile bin/
     
           - name: Upload static files as artifact
             id: deployment
             uses: actions/upload-artifact@v4 # or specific "vX.X.X" version tag for this action
             with:
-              path: ${{ github.event.inputs.platform }}/
-              name: cowsaybin-${{ github.event.inputs.platform }}
+              path: bin/
+              name: cowsaybin
       
-      # deploy:
-      #   name: deploy on my self hosted
-      #   needs: build
-      #   runs-on: ubuntu-latest
-      #   steps:
-      #     - uses: actions/download-artifact@v4
-      #       with:
-      #         path: .
-      #         name: cowsaybin
-      #     - run: | 
-      #         chmod u+x cowsay
-      #         ./cowsay
+      deploy:
+        name: deploy on my self hosted
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/download-artifact@v4
+            with:
+              path: .
+              name: cowsaybin
+          - run: | 
+              chmod u+x cowsay
+              ./cowsay
       
       push-docker:
         name: push in dockerhub registry
@@ -77,7 +75,7 @@
           - uses: actions/download-artifact@v4
             with:
               path: .
-              name: cowsaybin-${{ github.event.inputs.platform }}
+              name: cowsaybin
     
           - run: | 
               chmod u+x cowsay
