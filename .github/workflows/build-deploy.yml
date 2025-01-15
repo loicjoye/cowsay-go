@@ -2,9 +2,21 @@
 
     name: build and deliver cowsay app
     
-    on:
-      push:
-       tags: 'v*'
+    # on:
+    #   push:
+    #    tags: 'v*'
+
+    on: 
+        workflow_dispatch:
+          inputs:
+            # logLevel:
+            #   description: 'Log level'     
+            #   required: true
+            #   default: 'warning'
+            tags:
+              description: "Version"   
+              required: true
+              type: boolean
     
     env:
       REGISTRY: docker.io
