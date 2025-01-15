@@ -65,7 +65,7 @@
               path: .
               name: cowsaybin
           - run:  
-            #   chmod u+x cowsay
+               chmod u+x cowsay
               ./cowsay
 
 #-----------------Déploiement sur DockerHub----------------------  
@@ -114,4 +114,4 @@
               push: true
               tags: ${{ steps.meta.outputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
-           #   platforms: linux/${{ github.event.inputs.platform }}
+              platforms: linux/${{ github.event.inputs.platform }}
