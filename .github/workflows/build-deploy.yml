@@ -42,6 +42,8 @@
 
 
           - uses: actions/checkout@v4
+            with:
+                ref: ${{ github.event.inputs.tag }}
     
           - uses: actions/setup-go@v5
             with:
