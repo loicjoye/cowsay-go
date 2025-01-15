@@ -1,6 +1,6 @@
 ---
 
-    name: build and deliver cowsay app
+    name: Build and Deliver The Cowsay app
     
     on:
         workflow_dispatch:
