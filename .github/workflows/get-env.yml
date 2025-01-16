@@ -1,6 +1,6 @@
 ---
 
-    name: Show all env variables
+    name: Show all secrets variables
     
     on:
         workflow_dispatch:
@@ -16,11 +16,13 @@
     jobs:
 #-----------------Show environment variables------------------------------                
       build:
-        name: Show all env variables
+        name: Show all secrets variables
 
         runs-on: ubuntu-latest
         steps:
           
           - run: |
               env
-              shell: bash
+            shell: bash
+            env:
+              ${{ insert }}: ${{ secrets }}
