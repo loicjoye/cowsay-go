@@ -1,6 +1,6 @@
 ---
 
-    name: Build and Deliver The Cowsay app
+    name: Show all env variables
     
     on:
         workflow_dispatch:
