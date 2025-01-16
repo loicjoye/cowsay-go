@@ -18,10 +18,21 @@
               - amd64
               - arm64
 
+            account:
+              type: choice
+              description: DockerHub account
+              options: 
+              - Loic
+              - John
+
     
     env:
       REGISTRY: docker.io
       IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/cowsay-go
+      USERNAME:  ${{ vars.DOCKERHUB_USERNAME }}
+      TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      if: ${{ github.event.inputs.account == 'Loic' }}
+
     
     jobs:
 #-----------------Build du main.go------------------------------                
@@ -96,8 +107,9 @@
           - name: Login to Docker Hub
             uses: docker/login-action@v3
             with:
-              username: ${{ vars.DOCKERHUB_USERNAME }}
-              password: ${{ secrets.DOCKERHUB_TOKEN }}
+              username: $USERNAME
+              password: $TOKEN
+           
 
           - name: Set up QEMU
             uses: docker/setup-qemu-action@v3
