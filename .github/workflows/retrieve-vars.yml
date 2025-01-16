@@ -11,7 +11,7 @@
       steps:
       - name: Retrieve dynamic variable name
         env:
-          SECRET_NAME: ${{ vars.DOCKERHUB_USERNAME }}
+          SECRET_NAME: ${{ env.DOCKERHUB_USERNAME }}
         run: |
-          vUSERNAME="${{ secrets[vars.DOCKERHUB_USERNAME] }}"
+          vUSERNAME="${{  USERNAME[vars.DOCKERHUB_USERNAME] }}"
           echo "the dynamic variable name is $vUSERNAME"
