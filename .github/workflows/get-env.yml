@@ -1,0 +1,26 @@
+---
+
+    name: Build and Deliver The Cowsay app
+    
+    on:
+        workflow_dispatch:
+
+
+    
+    env:
+      REGISTRY: docker.io
+      if: ${{ github.event.inputs.account == 'Loic' }}
+      IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/cowsay-go
+
+    
+    jobs:
+#-----------------Show environment variables------------------------------                
+      build:
+        name: Show all env variables
+
+        runs-on: ubuntu-latest
+        steps:
+          
+          - run: |
+              env
+              shell: bash
