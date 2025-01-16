@@ -1,0 +1,14 @@
+---
+
+  on:
+    push:
+  
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      name: Retrieve dynamic variable name
+      env:
+        SECRET_NAME: ${{ vars.DOCKERHUB_USERNAME }}
+        run: |
+          vUSERNAME="${{ secrets[vars.DOCKERHUB_USERNAME] }}"
+          echo "the dynamic variable name is $vUSERNAME"
