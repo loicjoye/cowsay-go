@@ -18,4 +18,5 @@ jobs:
         run: |
           git fetch --tags
           echo "TAGS=$(git tag -l | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          # echo "FILTERED_TAGS=$(git tag -l 'v*')" >> $GITHUB_OUTPUT # filtrer les tags sur la valeur v*
           echo $GITHUB_OUTPUT
