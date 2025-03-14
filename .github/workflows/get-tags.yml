@@ -6,17 +6,16 @@ on:
     workflow_dispatch:
 
 jobs:
-  get-tags:
+  list-tags:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Important pour récupérer tout l'historique
+      
       - name: List All Tags
-        id: tags
         run: |
           git fetch --tags
-          echo "TAGS=$(git tag -l | tr '\n' ' ')" >> $GITHUB_OUTPUT
-          # echo "FILTERED_TAGS=$(git tag -l 'v*')" >> $GITHUB_OUTPUT # filtrer les tags sur la valeur v*
-          echo $GITHUB_OUTPUT
+          echo "=== LISTE COMPLÈTE DES TAGS ==="
+          git tag -l
